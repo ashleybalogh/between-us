@@ -2,15 +2,16 @@
   "name": "Between Us",
   "short_name": "Between Us",
   "description": "A private two-player truth or dare deck. Him and her. One pass each.",
-  "start_url": ".",
-  "scope": ".",
+  "id": "/between-us/",
+  "start_url": "/between-us/",
+  "scope": "/between-us/",
   "display": "standalone",
   "orientation": "portrait",
   "background_color": "#0c0b0a",
   "theme_color": "#0c0b0a",
   "icons": [
     {
-      "src": "./icons/icon-180.png",
+      "src": "/between-us/icons/icon-180.png",
       "sizes": "180x180",
       "type": "image/png",
       "purpose": "any"
