@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { PlayingCard } from "@/components/playing-card";
 import { Button } from "@/components/ui/button";
+import { DebugPanel } from "@/components/debug-panel";
 import { ExploreVerdictPanel } from "@/components/explore-verdict";
 import {
   NEGOTIATION_CARD_ID,
@@ -271,6 +272,8 @@ export function PlayView() {
               : "Next"}
           </Button>
         ) : null}
+
+        <DebugPanel />
 
         {game.phase === "over" ? (
           <div className="flex flex-col gap-3">

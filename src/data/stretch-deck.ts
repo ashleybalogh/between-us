@@ -24,7 +24,7 @@ const RAW: RawCard[] = [
   { kind: "dare", audience: "him", tier: 2, text: "Alternate: something soft over her skin, then your nails. She says which one she wants more of, and you give her that one." },
   { kind: "dare", audience: "him", tier: 2, text: "Bite her — shoulder, thigh, the side of her ass. Hard enough that she makes a noise, not hard enough to leave anything." },
   { kind: "dare", audience: "her", tier: 2, text: "Use your teeth on him somewhere you never have." },
-  { kind: "dare", audience: "him", tier: 2, text: "Back of a hairbrush instead of your hand. Five, over her panties, then take them off and use your hand on the same spot." },
+  { kind: "dare", audience: "him", tier: 2, text: "Back of a hairbrush instead of your hand. Five over her panties, then pull them down and use your hand on the same skin." },
   { kind: "dare", audience: "him", tier: 2, text: "Only your breath and your mouth, no hands at all, for three minutes. Hands behind your back if you can't manage it." },
 
   // ─── TIER 2 · WHAT SHE'S BEEN READING ─────────────────────────────
@@ -34,7 +34,7 @@ const RAW: RawCard[] = [
   },
   {
     kind: "dare", audience: "both", tier: 2,
-    text: "Whatever she just read — do the part of it that's actually doable in this room. If none of it is, she describes what she'd change to make it work.",
+    text: "She picks a scene from something she's been reading and describes it out loud. Then do whatever part of it works in this room.",
   },
   {
     kind: "dare", audience: "her", tier: 2,
@@ -56,24 +56,24 @@ const RAW: RawCard[] = [
   { kind: "dare", audience: "both", tier: 2, text: "Shower. He washes her first, all of her, properly, before anything else happens." },
   { kind: "dare", audience: "him", tier: 2, text: "Her against the wall, standing, your hand where you want it." },
   { kind: "dare", audience: "her", tier: 2, text: "Straddle him fully clothed and grind on him until he asks you to take something off." },
-  { kind: "dare", audience: "him", tier: 2, text: "Go down on her with her still dressed. Pull her underwear aside instead of taking anything off." },
+  { kind: "dare", audience: "him", tier: 2, text: "Eat her out with her still dressed. Pull her panties aside instead of taking anything off." },
 
   // ─── TIER 2 · TOYS (skip if there's nothing in the house) ─────────
   { kind: "dare", audience: "her", tier: 2, text: "Use it while he watches. Your hand or his on it — you pick. He doesn't get to touch himself either way." },
-  { kind: "dare", audience: "him", tier: 2, text: "You hold it, you decide where it goes and how long. She doesn't get a say." },
-  { kind: "dare", audience: "him", tier: 2, text: "Use it on her while you're kissing her, and stop the second before she gets there." },
+  { kind: "dare", audience: "him", tier: 2, text: "You hold it. You decide where it goes, how hard, how long. She doesn't get a say." },
+  { kind: "dare", audience: "him", tier: 2, text: "Use it on her while you're kissing her. Stop the second before she comes." },
 
   // ─── TIER 3 · ─────────────────────────────────────────────────────
-  { kind: "dare", audience: "both", tier: 3, text: "Both at once, her on top. Whoever gives up first loses, and the winner picks what happens next." },
-  { kind: "dare", audience: "her", tier: 3, text: "Ride him facing away. He holds your hips and sets the pace — you don't." },
+  { kind: "dare", audience: "both", tier: 3, text: "Sixty-nine, her on top. Whoever gives up first loses and the winner picks what happens next." },
+  { kind: "dare", audience: "her", tier: 3, text: "Ride him facing away. He holds your hips and sets the pace, not you." },
   { kind: "dare", audience: "her", tier: 3, text: "On top, but he holds your wrists down the whole time." },
   { kind: "dare", audience: "him", tier: 3, text: "Tie her hands to the headboard with something soft. She tells you when she wants them down." },
-  { kind: "dare", audience: "him", tier: 3, text: "Finish on her. She picks where before you start." },
+  { kind: "dare", audience: "him", tier: 3, text: "Come on her. She picks where before you start." },
   { kind: "dare", audience: "him", tier: 3, text: "She doesn't come until the third time she asks, and she has to ask differently each time." },
-  { kind: "dare", audience: "him", tier: 3, text: "Fingers in her mouth while you're inside her." },
+  { kind: "dare", audience: "him", tier: 3, text: "Your fingers in her mouth while you're fucking her." },
   { kind: "dare", audience: "him", tier: 3, text: "Make her count out loud, and start over every time she loses track." },
-  { kind: "dare", audience: "her", tier: 3, text: "Use your mouth on him while he's still fully dressed except for what he has to undo." },
-  { kind: "dare", audience: "him", tier: 3, text: "Hold her there — right at the edge — for a full minute before you let her have it." },
+  { kind: "dare", audience: "her", tier: 3, text: "Suck him off with him still dressed. He undoes the minimum." },
+  { kind: "dare", audience: "him", tier: 3, text: "Hold her right at the edge for a full minute before you let her come." },
   { kind: "dare", audience: "both", tier: 3, text: "Whoever drew this doesn't get to touch the other one at all for the next two cards. Only give instructions." },
   { kind: "dare", audience: "him", tier: 3, text: "Watch her finish. She decides whose hand does it — yours guided by her, or her own. Your other hand stays off you." },
   { kind: "dare", audience: "her", tier: 3, text: "Tell him you want it, then keep asking every time he stops." },

@@ -295,6 +295,97 @@ try {
   console.log("Explore cases: exclusion, persistence, two-per-night cap, abandon,");
   console.log("discarded tonight, and the tier-3 negotiation queue — all exercised.");
 
+  /* ------------------------------------------------------------------ *
+   * Toy flag and composition assertions
+   * ------------------------------------------------------------------ */
+
+  const { usePreferences } = await server.ssrLoadModule("/src/lib/preferences.ts");
+  const { poolFor, toySuppressed, MODE_LIST } = await server.ssrLoadModule("/src/lib/modes.ts");
+
+  const TOY_DARES = ["stretch-t2-dare-19", "stretch-t2-dare-20", "stretch-t2-dare-21"];
+  const TOY_QUESTIONS = ["explore-t2-explore-12", "explore-t2-explore-13"];
+
+  // Both sides of the flag name real cards. Ids encode array position, so this
+  // is the check that fails when a card is inserted above one of them.
+  {
+    const heat = poolFor("heat");
+    for (const id of [...TOY_DARES, ...TOY_QUESTIONS]) {
+      const card = heat.find((c) => c.id === id);
+      check(Boolean(card), `toys: ${id} is not in the heat pool at all`);
+      if (card) {
+        check(
+          /\bit\b|nothing in the house|did get something/i.test(card.text),
+          `toys: ${id} does not read like a toy card — "${card.text.slice(0, 50)}"`,
+        );
+      }
+    }
+  }
+
+  // Off (the default): the dares are out, the questions are in.
+  useExclusions.getState().clearAll();
+  usePreferences.getState().setToysInHouse(false);
+  {
+    check(
+      toySuppressed(false).size === TOY_DARES.length,
+      "toys: flag off should suppress exactly the dares",
+    );
+    S().startGame("heat");
+    const ids = new Set(S().game.cards.map((c) => c.id));
+    for (const id of TOY_DARES) check(!ids.has(id), `toys: ${id} dealt with no toy in the house`);
+    for (const id of TOY_QUESTIONS) check(ids.has(id), `toys: ${id} suppressed when it should ask`);
+  }
+
+  // On: that reverses. The question has been answered, so it stops being asked.
+  usePreferences.getState().setToysInHouse(true);
+  {
+    S().startGame("heat");
+    const ids = new Set(S().game.cards.map((c) => c.id));
+    for (const id of TOY_DARES) check(ids.has(id), `toys: ${id} still suppressed with the flag on`);
+    for (const id of TOY_QUESTIONS) check(!ids.has(id), `toys: ${id} still asked with the flag on`);
+  }
+
+  // The flag never touches Connection, which composes neither deck.
+  {
+    for (const flag of [false, true]) {
+      usePreferences.getState().setToysInHouse(flag);
+      S().startGame("connection");
+      const ids = new Set(S().game.cards.map((c) => c.id));
+      for (const id of [...TOY_DARES, ...TOY_QUESTIONS]) {
+        check(!ids.has(id), `toys: ${id} reached connection mode`);
+      }
+    }
+  }
+  usePreferences.getState().setToysInHouse(false);
+
+  // Stretch actually composes. This is the regression that started the brief:
+  // the deck existed and no mode listed it, so 38 dares never dealt.
+  {
+    const heat = poolFor("heat");
+    for (const tier of [2, 3]) {
+      const fromStretch = heat.filter(
+        (c) => c.id.startsWith("stretch-") && c.tier === tier,
+      ).length;
+      check(fromStretch > 0, `composition: no stretch cards at heat tier ${tier}`);
+    }
+    const dares2 = heat.filter((c) => c.tier === 2 && c.kind === "dare").length;
+    check(dares2 >= 40, `composition: heat tier 2 has ${dares2} dares — stretch is not composing`);
+
+    for (const mode of MODE_LIST) {
+      for (const tier of [1, 2, 3]) {
+        const at = poolFor(mode).filter((c) => c.tier === tier);
+        check(
+          at.some((c) => c.kind === "truth") && at.some((c) => c.kind === "dare"),
+          `composition: ${mode} tier ${tier} is missing a whole kind`,
+        );
+      }
+    }
+  }
+
+  console.log("Toy flag: suppresses one side or the other, never reaches Connection, and both");
+  console.log("id lists still resolve. Stretch confirmed composing into heat tiers 2 and 3.\n");
+
+
+
   useExclusions.getState().clearAll();
 
   /* ------------------------------------------------------------------ *

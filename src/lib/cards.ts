@@ -180,6 +180,22 @@ export function beatsFor(card: PromptCard, turn: PlayerId): Beat[] {
 
 export type DeckProblem = { severity: "error" | "warn"; where: string; detail: string };
 
+/**
+ * A card may look forward — "for the next three cards" is a legitimate
+ * modifier and several cards use it. A card may not look backward: the shuffle
+ * gives no guarantee about what preceded it, so a card that assumes a
+ * predecessor breaks the first time it is dealt first.
+ */
+const BACKWARD_REFERENCE: RegExp[] = [
+  /\bjust (read|said|did|drew|played|picked|answered)\b/i,
+  /\b(last|previous|preceding) card\b/i,
+  /\bthe card before\b/i,
+  /\bthat (last|previous) one\b/i,
+  // A card opening with "Same" carries its instruction over from whatever
+  // happened to precede it, which the shuffle does not promise.
+  /^\s*(same|likewise|now the same)\b/i,
+];
+
 export function checkPool(pool: PromptCard[]): DeckProblem[] {
   const problems: DeckProblem[] = [];
   const tiers = byTier(pool);
@@ -230,6 +246,17 @@ export function checkPool(pool: PromptCard[]): DeckProblem[] {
       where: "tier 4",
       detail: `${close} close cards, the night needs at least 3 to land`,
     });
+  }
+
+  for (const card of pool) {
+    const hit = BACKWARD_REFERENCE.find((pattern) => pattern.test(card.text));
+    if (hit) {
+      problems.push({
+        severity: "error",
+        where: card.id,
+        detail: `text assumes what came before it: "${card.text.slice(0, 60)}…"`,
+      });
+    }
   }
 
   return problems;

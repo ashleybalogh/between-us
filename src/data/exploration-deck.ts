@@ -93,7 +93,7 @@ const RAW: RawCard[] = [
   // ─── TIER 3 · the negotiation that happens right before ───────────
   {
     kind: "dare", audience: "both", tier: 3,
-    text: "Before the next card: whoever's taking it says the one thing that would make it stop. Not the stop word — the thing you'd want noticed before you had to use it.",
+    text: "Whoever's on the receiving end of the next card: name the one thing you'd want noticed before you ever had to use the stop word.",
   },
   {
     kind: "dare", audience: "both", tier: 3,

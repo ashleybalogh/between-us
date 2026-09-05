@@ -21,7 +21,8 @@ import {
   type Tier,
 } from "@/lib/cards";
 import { excludedIds, useExclusions } from "@/lib/exclusions";
-import { poolFor, type Mode } from "@/lib/modes";
+import { poolFor, toySuppressed, type Mode } from "@/lib/modes";
+import { toysInHouse } from "@/lib/preferences";
 
 export type Screen = "home" | "setup" | "play" | "settings";
 
@@ -113,9 +114,14 @@ type GameStore = {
 const SAVE_VERSION = 3;
 
 function freshGame(mode: Mode): GameState {
-  // A NOT FOR ME card is gone before the night starts, in every mode.
+  // A NOT FOR ME card is gone before the night starts, in every mode. The toy
+  // flag takes out one side or the other of the same pair: with nothing in the
+  // house the dares are duds, and with something in it the question is answered.
   const excluded = excludedIds();
-  const cards = poolFor(mode).filter((card) => !excluded.has(card.id));
+  const suppressed = toySuppressed(toysInHouse());
+  const cards = poolFor(mode).filter(
+    (card) => !excluded.has(card.id) && !suppressed.has(card.id),
+  );
   const tiers = byTier(cards);
   const setupQueue = tiers[0].map((card) => card.id);
   const first = cards.find((card) => card.id === setupQueue[0]) ?? null;

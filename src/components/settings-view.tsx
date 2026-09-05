@@ -2,6 +2,48 @@ import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { useExclusions } from "@/lib/exclusions";
 import { useGameStore } from "@/lib/game-store";
+import { usePreferences } from "@/lib/preferences";
+import { cn } from "@/lib/utils";
+
+function Toggle({
+  label,
+  detail,
+  checked,
+  onChange,
+}: {
+  label: string;
+  detail: string;
+  checked: boolean;
+  onChange: (value: boolean) => void;
+}) {
+  return (
+    <button
+      type="button"
+      role="switch"
+      aria-checked={checked}
+      onClick={() => onChange(!checked)}
+      className="flex w-full items-start gap-3 rounded-xl bg-raised px-4 py-4 text-left shadow-[var(--shadow-border)] transition-[box-shadow] duration-[var(--motion-quick)] hover:shadow-[var(--shadow-border-hover)]"
+    >
+      <span className="min-w-0 flex-1">
+        <span className="block text-sm text-fg">{label}</span>
+        <span className="mt-1 block text-sm leading-relaxed text-muted">{detail}</span>
+      </span>
+      <span
+        className={cn(
+          "mt-0.5 h-6 w-10 shrink-0 rounded-full p-0.5 transition-colors duration-[var(--motion-quick)]",
+          checked ? "bg-accent" : "bg-border-strong",
+        )}
+      >
+        <span
+          className={cn(
+            "block h-5 w-5 rounded-full transition-transform duration-[var(--motion-quick)] ease-[var(--ease-out)]",
+            checked ? "translate-x-4 bg-accent-fg" : "translate-x-0 bg-fg/70",
+          )}
+        />
+      </span>
+    </button>
+  );
+}
 
 /**
  * The only thing here is the reset.
@@ -11,9 +53,14 @@ import { useGameStore } from "@/lib/game-store";
  * exclusion. The control exists because the list is theirs, not because using
  * it is a step anyone should be nudged toward.
  */
+
 export function SettingsView() {
   const setScreen = useGameStore((state) => state.setScreen);
   const clearAll = useExclusions((state) => state.clearAll);
+  const toysInHouse = usePreferences((state) => state.toysInHouse);
+  const setToysInHouse = usePreferences((state) => state.setToysInHouse);
+  const debugOverlay = usePreferences((state) => state.debugOverlay);
+  const setDebugOverlay = usePreferences((state) => state.setDebugOverlay);
   const [confirming, setConfirming] = useState(false);
   const [done, setDone] = useState(false);
 
@@ -33,6 +80,20 @@ export function SettingsView() {
         </header>
 
         <div className="flex flex-1 flex-col justify-center gap-5 py-10">
+          <Toggle
+            label="There's a toy in the house"
+            detail="Off, the cards that need one stay out of the deck and the ones asking whether you want one stay in. On, that swaps around."
+            checked={toysInHouse}
+            onChange={setToysInHouse}
+          />
+
+          <Toggle
+            label="Show the draw counters"
+            detail="Tier, cards picked against the gate, and what's left in the pool. For working out why a night felt fast or slow."
+            checked={debugOverlay}
+            onChange={setDebugOverlay}
+          />
+
           <div>
             <h2 className="font-display text-3xl italic leading-none text-fg">Exclusions</h2>
             <p className="mt-3 text-sm leading-relaxed text-muted">
