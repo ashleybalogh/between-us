@@ -22,6 +22,8 @@ const RAW: RawCard[] = [
   { kind: "truth", audience: "both", tier: 1, text: "What works about the way I start things? What doesn't?" },
 
   { kind: "gratitude", audience: "both", tier: 1, text: "Name something they did for you this week that had nothing to do with sex, and say why it mattered." },
+  { kind: "gratitude", audience: "both", tier: 2, text: "Tell them one thing they do in bed that you'd miss if it stopped." },
+  { kind: "gratitude", audience: "both", tier: 2, text: "Thank them for something they did tonight that you didn't have to ask for." },
 
   { kind: "dare", audience: "him", tier: 1, text: "Rub her feet for two minutes. Look at her while you do it." },
   { kind: "dare", audience: "her", tier: 1, text: "Sit behind him and work his shoulders and neck for two minutes." },

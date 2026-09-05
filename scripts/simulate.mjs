@@ -150,6 +150,15 @@ try {
       const deepest = hist.reduce((m, h) => Math.max(m, h.tier), 0);
       check(deepest === 4, `${label}: deepest tier was ${deepest}, expected 4`);
 
+      // Gratitude lands on a gate crossing between play tiers: 1->2 and 2->3.
+      // Dropping connection from Heat's tier 1 quietly took its gratitude
+      // cards with it and the second crossing started passing without one, so
+      // the count is asserted rather than left to the deck-check warning.
+      check(
+        grats === 2,
+        `${label}: ${grats} gratitude cards dealt, expected one per tier crossing`,
+      );
+
       // In a surprise mode the ratio must guarantee both kinds at every tier.
       // A random draw against Heat tier 2 (8 truths, 44 dares) would bury the
       // truths, which are the cards this game is actually for.
