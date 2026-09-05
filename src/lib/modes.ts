@@ -45,6 +45,28 @@ const MODES: Record<Mode, Record<Tier, PromptCard[][]>> = {
   },
 };
 
+/**
+ * Cards a player must pick at a tier before the next one unlocks.
+ *
+ * Connection is anchored on Aron's procedure: 36 items in three sets of twelve
+ * over about 45 minutes, with the escalation across sets doing the work. Ten
+ * per tier is thirty picked cards, close to that shape. Six was reaching the
+ * deep material before enough disclosure had accumulated to carry it.
+ *
+ * Heat stays at six. The gate is denominated in cards, and a dare costs far
+ * more wall-clock time than answering a question, so six cards there is
+ * already a longer tier than ten in Connection. Card count and elapsed time
+ * are not the same currency.
+ */
+export const TIER_GATE: Record<Mode, number> = {
+  connection: 10,
+  heat: 6,
+};
+
+export function gateFor(mode: Mode): number {
+  return TIER_GATE[mode];
+}
+
 const TIERS: Tier[] = [0, 1, 2, 3, 4];
 
 /**
@@ -84,8 +106,8 @@ export function modeInfo(mode: Mode): ModeInfo {
       mode === "connection"
         ? "The long ramp. Ends where it should."
         : "Same ramp, further along. Not the upgrade.",
-    playable: poolIsPlayable(pool),
-    problems: checkPool(pool),
+    playable: poolIsPlayable(pool, gateFor(mode)),
+    problems: checkPool(pool, gateFor(mode)),
   };
 }
 

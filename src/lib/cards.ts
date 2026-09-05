@@ -46,14 +46,19 @@ export const buildDeck = (raw: RawCard[], slug: string): PromptCard[] =>
  *
  * 1. Deal every tier-0 card first, in array order, before the game starts.
  * 2. Tier N+1 does not unlock until at least `gate` cards from tier N have
- *    been played. Suggested gate: 6.
+ *    been played. The gate is per mode — see TIER_GATE in modes.ts.
  * 3. Never deal down a tier once unlocked, except on a swap.
  * 4. Any card can be swapped once by the person it names. A swap deals a
  *    replacement from the same tier and costs nothing.
  * 5. The night ends on tier 4. Deal 3-4 close cards; don't let the app
  *    just run out of cards.
  */
-export const TIER_GATE = 6;
+/**
+ * Fallback only. The gate that actually runs is per mode: a dare costs far
+ * more wall-clock time than answering a question, so the same card count buys
+ * a much longer tier in Heat than in Connection. See TIER_GATE in modes.ts.
+ */
+export const DEFAULT_TIER_GATE = 6;
 
 /** Outcome of an `explore` card. Only "not-for-me" outlives the night. */
 export type ExploreVerdict = "not-for-me" | "not-tonight" | "tonight";
@@ -196,7 +201,7 @@ const BACKWARD_REFERENCE: RegExp[] = [
   /^\s*(same|likewise|now the same)\b/i,
 ];
 
-export function checkPool(pool: PromptCard[]): DeckProblem[] {
+export function checkPool(pool: PromptCard[], gate = DEFAULT_TIER_GATE): DeckProblem[] {
   const problems: DeckProblem[] = [];
   const tiers = byTier(pool);
 
@@ -216,11 +221,11 @@ export function checkPool(pool: PromptCard[]): DeckProblem[] {
             where: `tier ${tier} / ${kind}`,
             detail: `nothing dealable to ${player} — picking ${kind} here dead-ends`,
           });
-        } else if (count < TIER_GATE) {
+        } else if (count < gate) {
           problems.push({
             severity: "warn",
             where: `tier ${tier} / ${kind}`,
-            detail: `${count} for ${player}, gate is ${TIER_GATE} — a ${kind}-only player runs dry before the tier does`,
+            detail: `${count} for ${player}, gate is ${gate} — a ${kind}-only player runs dry before the tier does`,
           });
         }
       }
@@ -262,8 +267,8 @@ export function checkPool(pool: PromptCard[]): DeckProblem[] {
   return problems;
 }
 
-export function poolIsPlayable(pool: PromptCard[]): boolean {
-  return !checkPool(pool).some((problem) => problem.severity === "error");
+export function poolIsPlayable(pool: PromptCard[], gate = DEFAULT_TIER_GATE): boolean {
+  return !checkPool(pool, gate).some((problem) => problem.severity === "error");
 }
 
 export function deckStats(pool: PromptCard[]) {

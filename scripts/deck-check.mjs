@@ -23,7 +23,7 @@ const server = await createServer({
 });
 
 try {
-  const { MODE_LIST, modeInfo, poolFor } = await server.ssrLoadModule("/src/lib/modes.ts");
+  const { MODE_LIST, modeInfo, poolFor, gateFor } = await server.ssrLoadModule("/src/lib/modes.ts");
   let failed = false;
 
   for (const id of MODE_LIST) {

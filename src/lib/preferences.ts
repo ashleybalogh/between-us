@@ -15,6 +15,13 @@ type Preferences = {
    *
    * On: that reverses. The dares deal, and the question stops being asked
    * because it has been answered.
+   *
+   * A pure function of the current setting, deliberately. Permanence belongs
+   * only to things someone explicitly chose to make permanent — that is
+   * not-for-me, where the whole point is that a no stays a no. A settings
+   * toggle that silently latches is state nobody can reason about: if the toy
+   * goes, or the switch gets flipped by accident, the questions should come
+   * back.
    */
   toysInHouse: boolean;
   /** Draw-rule instrumentation on the play screen. Off by default. */

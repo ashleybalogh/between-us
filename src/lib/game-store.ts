@@ -5,7 +5,6 @@ import {
   COOLDOWN_EVERY,
   MAX_EXPLORE_PER_NIGHT,
   NEGOTIATION_CARD_ID,
-  TIER_GATE,
   addressed,
   beatsFor,
   byTier,
@@ -21,7 +20,7 @@ import {
   type Tier,
 } from "@/lib/cards";
 import { excludedIds, useExclusions } from "@/lib/exclusions";
-import { poolFor, toySuppressed, type Mode } from "@/lib/modes";
+import { gateFor, poolFor, toySuppressed, type Mode } from "@/lib/modes";
 import { toysInHouse } from "@/lib/preferences";
 
 export type Screen = "home" | "setup" | "play" | "settings";
@@ -309,7 +308,7 @@ function enterTier(game: GameState, tier: Tier): GameState {
 
 /** Where the game goes once a card is finished. Rule 2 and rule 5 live here. */
 function advance(game: GameState): GameState {
-  const gateMet = game.playedInTier >= TIER_GATE;
+  const gateMet = game.playedInTier >= gateFor(game.mode);
   const dryTier = tierExhausted(game);
 
   if (game.tier >= 3 && (gateMet || dryTier)) {

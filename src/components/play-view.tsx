@@ -6,12 +6,12 @@ import { ExploreVerdictPanel } from "@/components/explore-verdict";
 import {
   NEGOTIATION_CARD_ID,
   PLAY_TIERS,
-  TIER_GATE,
   playable,
   type CardKind,
   type Tier,
 } from "@/lib/cards";
 import { currentBeats, displayName, possess, useGameStore } from "@/lib/game-store";
+import { gateFor, type Mode } from "@/lib/modes";
 import { cn } from "@/lib/utils";
 
 function tap(ms = 12) {
@@ -23,7 +23,7 @@ function tap(ms = 12) {
 }
 
 /** The ramp, quietly. Four marks, filling as the night escalates. */
-function TierRail({ tier, played }: { tier: Tier; played: number }) {
+function TierRail({ tier, played, mode }: { tier: Tier; played: number; mode: Mode }) {
   return (
     <div className="flex items-center justify-center gap-1.5" aria-hidden>
       {PLAY_TIERS.map((step) => (
@@ -44,7 +44,7 @@ function TierRail({ tier, played }: { tier: Tier; played: number }) {
         )}
       />
       <span className="sr-only">
-        Tier {tier}, {played} of {TIER_GATE} played
+        Tier {tier}, {played} of {gateFor(mode)} played
       </span>
     </div>
   );
@@ -192,7 +192,7 @@ export function PlayView() {
 
         {game.phase !== "over" ? (
           <div className="pt-3">
-            <TierRail tier={game.tier} played={game.playedInTier} />
+            <TierRail tier={game.tier} played={game.playedInTier} mode={game.mode} />
           </div>
         ) : null}
 

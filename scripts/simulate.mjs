@@ -37,7 +37,8 @@ function check(cond, msg) {
 
 try {
   const { useGameStore } = await server.ssrLoadModule("/src/lib/game-store.ts");
-  const { TIER_GATE, beatsFor } = await server.ssrLoadModule("/src/lib/cards.ts");
+  const { beatsFor } = await server.ssrLoadModule("/src/lib/cards.ts");
+  const { gateFor } = await server.ssrLoadModule("/src/lib/modes.ts");
 
 
 
@@ -142,7 +143,7 @@ try {
           tier1: perTier[1] ?? 0,
           tier2: perTier[2] ?? 0,
           tier3: perTier[3] ?? 0,
-          gate: TIER_GATE,
+          gate: gateFor("connection"),
         });
       }
     }

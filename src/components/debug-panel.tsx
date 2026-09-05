@@ -1,4 +1,5 @@
-import { MAX_EXPLORE_PER_NIGHT, TIER_GATE, playable, type CardKind } from "@/lib/cards";
+import { MAX_EXPLORE_PER_NIGHT, playable, type CardKind } from "@/lib/cards";
+import { gateFor } from "@/lib/modes";
 import { useGameStore } from "@/lib/game-store";
 import { usePreferences } from "@/lib/preferences";
 
@@ -49,7 +50,7 @@ export function DebugPanel() {
         <span>
           picked{" "}
           <span className="text-muted">
-            {game.playedInTier}/{TIER_GATE}
+            {game.playedInTier}/{gateFor(game.mode)}
           </span>
         </span>
         <span>
