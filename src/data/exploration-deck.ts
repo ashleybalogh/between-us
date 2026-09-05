@@ -24,18 +24,18 @@ const RAW: RawCard[] = [
   // ─── TIER 0 · adds to heat setup ──────────────────────────────────
   {
     kind: "setup", audience: "both", tier: 0,
-    text: "Anything either of you marked NOT FOR ME on a past night stays off the table tonight. Nobody has to remember why.",
+    text: "Anything marked NOT FOR ME is gone. You don't have to remember which.",
   },
 
   // ─── TIER 2 · EXPLORE · what we already do, dialed ────────────────
   {
     kind: "explore", audience: "both", tier: 2,
-    text: "Praise or degradation — which one actually gets you there? Be honest even if the answer isn't the one you've been performing.",
+    text: "Praise or filth? Which one gets you there? Answer honestly, not the one you've been performing.",
     followUp: "Whoever answered: give one line you'd want said, in the exact words.",
   },
   {
     kind: "explore", audience: "both", tier: 2,
-    text: "Of everything we already do — the hand on your throat, being told to wait, being spanked, being made to ask — which one do you want harder, and which one do you want softer?",
+    text: "Throat, waiting, spanking, begging. Which do you want harder? Which softer?",
   },
   {
     kind: "explore", audience: "both", tier: 2,
@@ -43,7 +43,7 @@ const RAW: RawCard[] = [
   },
   {
     kind: "explore", audience: "both", tier: 2,
-    text: "Is there something we do that you go along with more than you want it? Saying so costs nothing and it comes straight off the list.",
+    text: "Is there something we do that you go along with more than you want? It comes off the list tonight.",
     followUp: "Listener: thank them, and don't ask them to justify it. Not tonight, not tomorrow.",
   },
   {
@@ -66,7 +66,7 @@ const RAW: RawCard[] = [
   },
   {
     kind: "explore", audience: "both", tier: 2,
-    text: "Playing someone other than ourselves — strangers who just met, a scenario with a story we both stay inside. Fun, or embarrassing?",
+    text: "Playing other people. Strangers who just met, a scene we stay inside. Hot or embarrassing?",
   },
   {
     kind: "explore", audience: "both", tier: 2,
@@ -78,12 +78,12 @@ const RAW: RawCard[] = [
   },
   {
     kind: "explore", audience: "both", tier: 2,
-    text: "There's nothing in the house. If there were — something for her, used by either of us — is that something you want, or not for you?",
+    text: "There's nothing in the house. If there were a toy for her, do you want it? Yes or no.",
     followUp: "If it's a yes from both: neither of you buys it alone. That's a decision you make together, sober, another day.",
   },
   {
     kind: "explore", audience: "both", tier: 2,
-    text: "If we did get something: is it hotter if he's the one using it on you, or if he only gets to watch?",
+    text: "The toy. Do you want him running it, or you running it while he watches?",
   },
   {
     kind: "explore", audience: "both", tier: 2,
@@ -93,11 +93,11 @@ const RAW: RawCard[] = [
   // ─── TIER 3 · the negotiation that happens right before ───────────
   {
     kind: "dare", audience: "both", tier: 3,
-    text: "Whoever's on the receiving end of the next card: name the one thing you'd want noticed before you ever had to use the stop word.",
+    text: "Whoever's taking the next card: name the tell you'd want noticed before you had to say the word.",
   },
   {
     kind: "dare", audience: "both", tier: 3,
-    text: "Take whatever came up TONIGHT on an explore card. Agree on where it starts, where it stops, and who calls it. Then do the first ten percent of it and nothing more.",
+    text: "The thing you both said yes to. Agree where it starts, where it stops, who calls it. Then do the first ten percent.",
   },
   {
     kind: "dare", audience: "him", tier: 3,
@@ -122,23 +122,23 @@ const RAW: RawCard[] = [
   // ─── TIER 4 · CLOSE · intensity-specific ──────────────────────────
   {
     kind: "close", audience: "both", tier: 4,
-    text: "Water, blanket, and nothing expected of either of you for ten minutes. Whoever was on top gets looked after too.",
+    text: "Water, blanket, ten minutes of nothing. Whoever was running it gets looked after too.",
   },
   {
     kind: "close", audience: "both", tier: 4,
-    text: "One thing that worked, one thing that didn't. Both of you, both halves. Not a review — just the two sentences.",
+    text: "One thing that worked, one that didn't. Both of you. Two sentences each.",
   },
   {
     kind: "close", audience: "both", tier: 4,
-    text: "Anything that came up tonight and turned out to be not for you: say so now, while it's clear. It comes off the list permanently.",
+    text: "Anything tonight that turned out not to be for you? Say it now. It's gone.",
   },
   {
     kind: "close", audience: "both", tier: 4,
-    text: "If the words used tonight were rough, say the true version now. Out loud, in your own voice.",
+    text: "If the words were rough tonight, say the true version now.",
   },
   {
     kind: "close", audience: "both", tier: 4,
-    text: "Set a reminder for tomorrow evening to ask each other how tonight sat. Actually set it — the answer at 9pm tomorrow is different from the answer now.",
+    text: "Set a reminder for tomorrow night to ask how this sat. Tomorrow's answer is different from tonight's.",
   },
 ];
 

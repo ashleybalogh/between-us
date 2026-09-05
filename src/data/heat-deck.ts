@@ -3,23 +3,23 @@ import { buildDeck, type RawCard } from "@/lib/cards";
 const RAW: RawCard[] = [
   // ─── TIER 0 · SETUP ────────────────────────────────────────────────
   // Dealt in order, every time. Thirty seconds that make the rest work.
-  { kind: "setup", audience: "both", tier: 0, text: "Each name one thing that's off the table tonight. No explanation owed, no negotiating it." },
-  { kind: "setup", audience: "both", tier: 0, text: "Agree on the word that stops everything. Saying it doesn't end the night and doesn't cost anything — the game just picks back up." },
-  { kind: "setup", audience: "both", tier: 0, text: "Either of you can swap any card once. A swap deals a new one and means nothing." },
-  { kind: "setup", audience: "both", tier: 0, text: "If any card tonight involves a camera: agree now whose phone, where the photos live, and when they get deleted. If either of you hesitates, the answer is no photos tonight." },
-  { kind: "setup", audience: "both", tier: 0, text: "Each say one thing you want out of tonight. You both get yours." },
+  { kind: "setup", audience: "both", tier: 0, text: "Name one thing that's off the table tonight. One each." },
+  { kind: "setup", audience: "both", tier: 0, text: "Pick the word that stops everything. Say it now, out loud, both of you." },
+  { kind: "setup", audience: "both", tier: 0, text: "Swap any card you don't want. You get a new one." },
+  { kind: "setup", audience: "both", tier: 0, text: "Photos tonight, yes or no? If yes: whose phone, and when do they get deleted?" },
+  { kind: "setup", audience: "both", tier: 0, text: "Say one thing you want tonight. One each." },
 
   // ─── TIER 1 · WARM ─────────────────────────────────────────────────
   { kind: "truth", audience: "both", tier: 1, text: "What's something small I do that turns you on more than I realize?" },
-  { kind: "truth", audience: "both", tier: 1, text: "What's the most turned on you've been with me recently? What specifically caused it?" },
+  { kind: "truth", audience: "both", tier: 1, text: "When were you most turned on with me recently? What did it?" },
   { kind: "truth", audience: "both", tier: 1, text: "What's the hottest thing I've ever said to you?" },
   { kind: "truth", audience: "both", tier: 1, text: "What do I do that makes you feel the most wanted?" },
-  { kind: "truth", audience: "both", tier: 1, text: "What's something you pretend to like less than you actually do?" },
+  { kind: "truth", audience: "both", tier: 1, text: "What do you pretend to like less than you do?" },
   { kind: "truth", audience: "both", tier: 1, text: "What's one thing I could say in the moment that would get you further into it instantly?" },
   { kind: "truth", audience: "both", tier: 1, text: "Do you like being told what to do, or being made to ask for it?" },
   { kind: "truth", audience: "both", tier: 1, text: "What's a thing we used to do that we've quietly stopped doing?" },
   { kind: "truth", audience: "both", tier: 1, text: "What part of you gets less attention than you want?" },
-  { kind: "truth", audience: "both", tier: 1, text: "What's something about the way I start things that works? What doesn't?" },
+  { kind: "truth", audience: "both", tier: 1, text: "What works about the way I start things? What doesn't?" },
 
   { kind: "gratitude", audience: "both", tier: 1, text: "Name something they did for you this week that had nothing to do with sex, and say why it mattered." },
 
@@ -41,10 +41,10 @@ const RAW: RawCard[] = [
     followUp: "Listener: don't answer yours yet. Say back what you heard, and say whether they were right to worry.",
   },
   { kind: "truth", audience: "both", tier: 2, text: "When do you feel most submissive with me? What puts you there?" },
-  { kind: "truth", audience: "both", tier: 2, text: "When I take control, what part of it are you actually responding to?" },
+  { kind: "truth", audience: "both", tier: 2, text: "When I take control, what part of it gets you?" },
   { kind: "truth", audience: "both", tier: 2, text: "What's the difference, for you, between wanting to be taken care of and wanting to be used?" },
   { kind: "truth", audience: "both", tier: 2, text: "What's something I've done that you still think about weeks later?" },
-  { kind: "truth", audience: "both", tier: 2, text: "What's something you're curious about but not sure you actually want?" },
+  { kind: "truth", audience: "both", tier: 2, text: "What are you curious about but not sure you want?" },
   {
     kind: "truth", audience: "both", tier: 2,
     text: "Where's your line between hot and too far, and how would I know I'd crossed it?",
@@ -68,8 +68,8 @@ const RAW: RawCard[] = [
   { kind: "dare", audience: "him", tier: 2, text: "Tell her exactly what you like about how she's taking it. Specific. Not general." },
   { kind: "dare", audience: "him", tier: 2, text: "Whisper \"good girl\" every single time she does what you asked." },
   { kind: "dare", audience: "her", tier: 2, text: "Say the thing out loud that you'd normally only think." },
-  { kind: "dare", audience: "both", tier: 2, text: "Mirror. He stands behind her, undresses her slowly, and she watches the whole thing." },
-  { kind: "dare", audience: "both", tier: 2, text: "Sit across from each other and touch yourselves for sixty seconds. Either of you can use the other's hand instead of your own." },
+  { kind: "dare", audience: "both", tier: 2, text: "Mirror. He undresses her from behind. She watches." },
+  { kind: "dare", audience: "both", tier: 2, text: "Touch yourselves, facing each other, sixty seconds. Your hand or theirs, you pick." },
   { kind: "dare", audience: "him", tier: 2, text: "Get her close. Stop. Kiss her. Make her wait." },
   { kind: "dare", audience: "her", tier: 2, text: "Get him close, stop, and make him ask." },
   { kind: "dare", audience: "her", tier: 2, text: "Kiss and use your mouth on his chest, stomach and thighs for two minutes. No further until he says." },
@@ -83,7 +83,7 @@ const RAW: RawCard[] = [
   // question at this point in the night. One breath each.
   { kind: "truth", audience: "both", tier: 3, text: "Right now. What do you want more of?" },
   { kind: "truth", audience: "both", tier: 3, text: "What were you hoping I'd do tonight that I haven't yet?" },
-  { kind: "truth", audience: "both", tier: 3, text: "What's actually going through your head right now?" },
+  { kind: "truth", audience: "both", tier: 3, text: "What's going through your head right now?" },
   { kind: "truth", audience: "both", tier: 3, text: "Is there something you're close to asking for? Ask it." },
   { kind: "truth", audience: "both", tier: 3, text: "More, or slower? Tell me the true answer, not the generous one." },
   { kind: "truth", audience: "both", tier: 3, text: "How close are we to the thing you'd want me to stop at?" },

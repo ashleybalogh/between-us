@@ -8,7 +8,7 @@ const RAW: RawCard[] = [
 
   // ─── TIER 1 · WARM ─────────────────────────────────────────────────
   { kind: "truth", audience: "both", tier: 1, text: "What's the best thing that happened to you this month that I don't know about?" },
-  { kind: "truth", audience: "both", tier: 1, text: "Walk me through a completely free Tuesday. No obligations, no travel. What do you actually do with it?" },
+  { kind: "truth", audience: "both", tier: 1, text: "A completely free Tuesday. Nothing owed to anyone. Walk me through it." },
   { kind: "truth", audience: "both", tier: 1, text: "What were you certain about at twenty that you'd argue against now?" },
   { kind: "truth", audience: "both", tier: 1, text: "Which of your parents are you more like, and how do you feel about that?" },
   { kind: "truth", audience: "both", tier: 1, text: "What's a small luxury you'd defend to the death?" },
@@ -31,6 +31,9 @@ const RAW: RawCard[] = [
   { kind: "dare", audience: "both", tier: 1, text: "Trace a word on their palm. They guess it." },
   { kind: "dare", audience: "both", tier: 1, text: "Describe them to an imaginary stranger in three sentences. Out loud, right now." },
   { kind: "dare", audience: "both", tier: 1, text: "Show them the photo on your phone that feels most like the two of you, and say what's in it that you love." },
+  { kind: "dare", audience: "both", tier: 1, text: "Feed them something from the kitchen. Their eyes stay closed." },
+  { kind: "dare", audience: "both", tier: 1, text: "Take their shoes off and rub their feet for two minutes." },
+  { kind: "dare", audience: "both", tier: 1, text: "Put your hand on the back of their neck and leave it there while they talk." },
 
   // ─── TIER 2 · OPEN ─────────────────────────────────────────────────
   {
@@ -42,7 +45,7 @@ const RAW: RawCard[] = [
   { kind: "truth", audience: "both", tier: 2, text: "What's a question you've wanted to ask me and haven't? Ask it now." },
   { kind: "truth", audience: "both", tier: 2, text: "When do you feel most like yourself with me? When do you feel least?" },
   { kind: "truth", audience: "both", tier: 2, text: "What's something you want for yourself that has nothing to do with me or anyone else in this house?" },
-  { kind: "truth", audience: "both", tier: 2, text: "What's a way you'd like to be taken care of that you never actually ask for?" },
+  { kind: "truth", audience: "both", tier: 2, text: "How do you want to be taken care of that you never ask for?" },
   { kind: "truth", audience: "both", tier: 2, text: "What's a moment recently when you wanted me closer and didn't say so?" },
   { kind: "truth", audience: "both", tier: 2, text: "What do you think I get wrong about you?", followUp: "Listener: your only line here is \"tell me more.\" No defending, no correcting." },
   { kind: "truth", audience: "both", tier: 2, text: "What's something about your life you assumed would be settled by now?" },
@@ -50,13 +53,13 @@ const RAW: RawCard[] = [
   { kind: "truth", audience: "both", tier: 2, text: "What have you changed your mind about since we got together?" },
   { kind: "truth", audience: "both", tier: 2, text: "What's a habit of mine you'd quietly like less of?", followUp: "Listener: say thank you. That's the whole response. You can come back to it tomorrow." },
   { kind: "truth", audience: "him", tier: 2, text: "What's something she does that you find more attractive than she has any idea about?" },
-  { kind: "truth", audience: "her", tier: 2, text: "What's a moment he thought was nothing that actually mattered a lot to you?" },
+  { kind: "truth", audience: "her", tier: 2, text: "What did he think was nothing that mattered a lot to you?" },
 
   { kind: "gratitude", audience: "both", tier: 2, text: "Tell them about a time you were proud of them and never said so." },
   { kind: "gratitude", audience: "both", tier: 2, text: "Name something they gave up for this family. Say that you know it cost them." },
 
   { kind: "dare", audience: "both", tier: 2, text: "Plan something on the spot that neither of you has ever done. Put an actual date on it before the next card." },
-  { kind: "dare", audience: "both", tier: 2, text: "Whatever you just planned — book it, message someone about it, or set the reminder now. Out loud, so the other one hears it happen." },
+  { kind: "dare", audience: "both", tier: 2, text: "Book it now. Message, reservation, reminder. Out loud so they hear it happen." },
   { kind: "dare", audience: "both", tier: 2, text: "Ask for something you want tonight. Plainly. No hedging, no joke at the end of the sentence." },
   { kind: "dare", audience: "both", tier: 2, text: "Show them with your hands exactly how you like to be held. Then hold them their way." },
   { kind: "dare", audience: "both", tier: 2, text: "Kiss them the way you would if you'd just met and weren't sure you were allowed." },
@@ -64,6 +67,9 @@ const RAW: RawCard[] = [
   { kind: "dare", audience: "both", tier: 2, text: "Whisper the thing you've been thinking all week and not saying." },
   { kind: "dare", audience: "him", tier: 2, text: "Take her hand, stand up, and tell her why you stay." },
   { kind: "dare", audience: "her", tier: 2, text: "Take his face in your hands and tell him one thing you're proud of him for." },
+  { kind: "dare", audience: "both", tier: 2, text: "Ask them for one thing right now. They say yes or they say why not." },
+  { kind: "dare", audience: "both", tier: 2, text: "Tell them something you noticed about them this week and kept to yourself." },
+  { kind: "dare", audience: "both", tier: 2, text: "Sit close enough that you're touching and say nothing for a full minute." },
 
   // ─── TIER 3 · DEEP ─────────────────────────────────────────────────
   { kind: "truth", audience: "both", tier: 3, text: "What's a fear about us you've never said out loud?" },
@@ -89,17 +95,20 @@ const RAW: RawCard[] = [
   { kind: "dare", audience: "her", tier: 3, text: "Put his hand over your heart and say one sentence you completely mean." },
   { kind: "dare", audience: "both", tier: 3, text: "Say out loud the thing you've been avoiding saying. Then stop talking and let it sit." },
   { kind: "dare", audience: "both", tier: 3, text: "Apologise properly for something you never properly apologised for." },
-  { kind: "dare", audience: "both", tier: 3, text: "Tell them the version of your future you're actually afraid of. Not the tidy one." },
-  { kind: "dare", audience: "both", tier: 3, text: "Name one thing you've been carrying alone. Ask them to carry part of it, specifically." },
+  { kind: "dare", audience: "both", tier: 3, text: "The version of your future you're afraid of. Not the tidy one." },
+  { kind: "dare", audience: "both", tier: 3, text: "Name something you've been carrying alone. Ask them to take a specific piece of it." },
   { kind: "dare", audience: "both", tier: 3, text: "Tell them what you were like before them, honestly, including the part you're not proud of." },
   { kind: "dare", audience: "both", tier: 3, text: "Ask them for something you've assumed you weren't allowed to ask for." },
   { kind: "dare", audience: "him", tier: 3, text: "Tell her the thing you've never said because you thought it would worry her." },
   { kind: "dare", audience: "her", tier: 3, text: "Tell him what you need from him that you've been handling by yourself instead." },
+  { kind: "dare", audience: "both", tier: 3, text: "Say the thing you've been rehearsing. All of it, out loud." },
+  { kind: "dare", audience: "both", tier: 3, text: "Tell them what you'd want them to do if you were falling apart and couldn't say so." },
+  { kind: "dare", audience: "both", tier: 3, text: "Look at them and say the thing you assume they already know." },
 
   // ─── TIER 4 · CLOSE ────────────────────────────────────────────────
   { kind: "close", audience: "both", tier: 4, text: "Each name one moment from tonight you'll still be thinking about tomorrow." },
   { kind: "close", audience: "both", tier: 4, text: "Tell them one thing you learned about them tonight that you didn't know this morning." },
-  { kind: "close", audience: "both", tier: 4, text: "One thing each of you is going to actually do differently this week because of something said tonight." },
+  { kind: "close", audience: "both", tier: 4, text: "One thing each of you does differently this week because of tonight." },
   { kind: "close", audience: "both", tier: 4, text: "Say out loud what you want to happen next." },
   { kind: "close", audience: "both", tier: 4, text: "Lie down and stay touching for five minutes. Phones stay where they are." },
 ];
