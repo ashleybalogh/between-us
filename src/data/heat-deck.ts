@@ -27,12 +27,15 @@ const RAW: RawCard[] = [
   { kind: "dare", audience: "her", tier: 1, text: "Sit behind him and work his shoulders and neck for two minutes." },
   { kind: "dare", audience: "him", tier: 1, text: "Kiss only her neck and collarbones for ninety seconds." },
   { kind: "dare", audience: "her", tier: 1, text: "Kiss only his neck and jaw for ninety seconds." },
-  { kind: "dare", audience: "him", tier: 1, text: "Trace your fingers over her for two minutes — anywhere except where she wants them." },
+  { kind: "dare", audience: "him", tier: 1, text: "Trace your fingers over her for two minutes. Anywhere except where she wants them." },
   { kind: "dare", audience: "her", tier: 1, text: "Run your hands over him for two minutes. Everywhere except his cock." },
   { kind: "dare", audience: "him", tier: 1, text: "Hold her face and kiss her for a full minute. Nothing else moves." },
   { kind: "dare", audience: "both", tier: 1, text: "Undress each other one item at a time, alternating. Neither of you touches your own clothes." },
   { kind: "dare", audience: "him", tier: 1, text: "Kiss your way down her spine and stop at the base of it." },
   { kind: "dare", audience: "both", tier: 1, text: "Lie behind them, hands on their hips, and just breathe on their neck for a minute." },
+  { kind: "dare", audience: "her", tier: 1, text: "Straddle him with your clothes still on and kiss him until he moves your hips." },
+  { kind: "dare", audience: "her", tier: 1, text: "Take his hand and put it exactly where you want it. Leave it there." },
+  { kind: "dare", audience: "her", tier: 1, text: "Undo one thing of his. Your choice which. Then stop." },
 
   // ─── TIER 2 · OPEN ─────────────────────────────────────────────────
   {

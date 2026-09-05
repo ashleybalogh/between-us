@@ -8,7 +8,8 @@
     "preview": "vite preview",
     "typecheck": "tsc --noEmit",
     "deck:check": "node scripts/deck-check.mjs",
-    "simulate": "node scripts/simulate.mjs"
+    "simulate": "node scripts/simulate.mjs",
+    "trace": "node scripts/trace-night.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

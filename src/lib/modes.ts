@@ -17,11 +17,13 @@ const stretch = byTier(STRETCH_DECK);
  * There is deliberately no runtime weighting or balancing between decks: if a
  * mode needs different proportions, that is an edit to this table.
  *
- * Heat does not open on its own tier 1. This deck's tier 1 is already a tier-2
- * question in absolute terms, so starting there is starting mid-ramp — the
- * exact failure the tiering exists to fix. Heat's warm tier is drawn from both
- * decks, and its close keeps one connection card so the night lands somewhere
- * other than where it peaked.
+ * Heat's tier 1 used to blend in connection's, on the theory that heat opened
+ * too hot. That was wrong: heat tier 1 is foot rubs, necks and undressing each
+ * other, which is already a warm tier. The connection cards were belt and
+ * braces, and because eleven of the twenty-one tier-1 dares came from them, a
+ * player picking dare drew mostly non-sexual cards for the whole opening tier.
+ * Heat now opens on its own deck. Connection stays in the close, where landing
+ * somewhere other than the peak is the point.
  *
  * Exploration and stretch are supplements to Heat, not modes of their own.
  * Exploration carries the explore cards plus a tier-0 line and its own close;
@@ -38,7 +40,7 @@ const MODES: Record<Mode, Record<Tier, PromptCard[][]>> = {
   },
   heat: {
     0: [heat[0], exploration[0]],
-    1: [connection[1], heat[1]],
+    1: [heat[1]],
     2: [heat[2], stretch[2], exploration[2]],
     3: [heat[3], stretch[3], exploration[3]],
     4: [heat[4], connection[4], exploration[4]],

@@ -44,14 +44,19 @@ try {
 
   const summaries = [];
 
-  for (const strategy of ["truth", "dare", "mixed"]) {
-    for (let run = 0; run < 40; run += 1) {
+  // Both modes, both extreme strategies. Modelling only Connection missed
+  // that Heat's tier 1 was mostly Connection cards, because a mixed picker
+  // never notices which deck a dare came from.
+  for (const mode of ["connection", "heat"]) {
+   for (const strategy of ["truth", "dare", "mixed"]) {
+    const label = `${mode}/${strategy}`;
+    for (let run = 0; run < 20; run += 1) {
       const s = () => useGameStore.getState();
-      s().startGame("connection");
+      s().startGame(mode);
 
       let guard = 0;
       while (s().game.phase === "setup" && guard++ < 20) s().advanceSetup();
-      check(guard < 20, `${strategy}: setup never finished`);
+      check(guard < 20, `${label}: setup never finished`);
 
       let tierSeen = s().game.tier;
       const perTier = {};
@@ -62,7 +67,7 @@ try {
       while (s().game.phase !== "over" && guard++ < 500) {
         const g = s().game;
 
-        check(g.tier >= tierSeen, `${strategy}: tier went down ${tierSeen} -> ${g.tier}`);
+        check(g.tier >= tierSeen, `${label}: tier went down ${tierSeen} -> ${g.tier}`);
         tierSeen = g.tier;
 
         if (g.phase === "choose") {
@@ -72,9 +77,15 @@ try {
           if (s().pickKind(want) === "empty") {
             check(
               s().pickKind(alt) !== "empty",
-              `${strategy}: both kinds dry at tier ${g.tier} before the gate`,
+              `${label}: both kinds dry at tier ${g.tier} before the gate`,
             );
           }
+          continue;
+        }
+
+        if (g.phase === "explore") {
+          s().resolveExplore("not-tonight", "not-tonight");
+          s().nextBeat();
           continue;
         }
 
@@ -86,21 +97,21 @@ try {
             if (r === "ok") {
               swaps += 1;
               const after = s().game.current;
-              check(after.id !== before, `${strategy}: swap returned the same card`);
+              check(after.id !== before, `${label}: swap returned the same card`);
               check(
                 after.tier === g.tier,
-                `${strategy}: swap dealt tier ${after.tier} at tier ${g.tier}`,
+                `${label}: swap dealt tier ${after.tier} at tier ${g.tier}`,
               );
               check(
                 s().swapCard() === "used",
-                `${strategy}: replacement card was swappable again`,
+                `${label}: replacement card was swappable again`,
               );
             }
           }
           const card = s().game.current;
           const expected = beatsFor(card, s().game.turn).length;
           if (card.kind === "truth" && card.reciprocal !== false) {
-            check(expected >= 2, `${strategy}: reciprocal truth had ${expected} beat(s)`);
+            check(expected >= 2, `${label}: reciprocal truth had ${expected} beat(s)`);
           }
           const tierNow = s().game.tier;
           s().nextBeat();
@@ -115,26 +126,28 @@ try {
         s().nextBeat();
       }
 
-      check(guard < 500, `${strategy}: night never ended`);
-      check(s().game.phase === "over", `${strategy}: ended in ${s().game.phase}`);
+      check(guard < 500, `${label}: night never ended`);
+      check(s().game.phase === "over", `${label}: ended in ${s().game.phase}`);
 
       const hist = s().game.history;
       const closes = hist.filter((h) => h.action === "played" && h.kind === "close").length;
       const grats = hist.filter((h) => h.action === "played" && h.kind === "gratitude").length;
       const deepest = hist.reduce((m, h) => Math.max(m, h.tier), 0);
-      check(deepest === 4, `${strategy}: deepest tier was ${deepest}, expected 4`);
+      check(deepest === 4, `${label}: deepest tier was ${deepest}, expected 4`);
 
-      for (const [tier, played] of Object.entries(perTier)) {
-        if (Number(tier) >= 1 && Number(tier) <= 3) {
-          check(
-            played >= 1,
-            `${strategy}: tier ${tier} played ${played}`,
-          );
-        }
+      // Every play tier must land on exactly the gate. A same-kind picker
+      // stalling at a tier shows up here as a short count, and a tier that
+      // ran dry early shows up the same way — both are worth failing on.
+      for (const tier of [1, 2, 3]) {
+        check(
+          (perTier[tier] ?? 0) === gateFor(mode),
+          `${label}: tier ${tier} played ${perTier[tier] ?? 0}, gate is ${gateFor(mode)}`,
+        );
       }
 
       if (run === 0) {
         summaries.push({
+          mode,
           strategy,
           cardsPlayed: hist.filter((h) => h.action === "played").length,
           swapsTaken: swaps,
@@ -143,10 +156,11 @@ try {
           tier1: perTier[1] ?? 0,
           tier2: perTier[2] ?? 0,
           tier3: perTier[3] ?? 0,
-          gate: gateFor("connection"),
+          gate: gateFor(mode),
         });
       }
     }
+   }
   }
 
   /* ------------------------------------------------------------------ *
@@ -515,7 +529,7 @@ try {
   console.log("Cooldown cases: tier-3 only, every " + COOLDOWN_EVERY + " cards, one on the way");
   console.log("out, no chaining, not swappable, and one even on a tier that ran dry early.\n");
 
-  console.log("120 nights simulated (40 truth-only, 40 dare-only, 40 mixed)\n");
+  console.log("120 nights simulated: both modes x truth-only, dare-only, mixed\n");
   console.table(summaries);
   if (failures.length) {
     console.log(`\n${failures.length} assertion failure(s):`);
