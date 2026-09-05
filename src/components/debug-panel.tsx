@@ -1,5 +1,5 @@
 import { MAX_EXPLORE_PER_NIGHT, playable, type CardKind } from "@/lib/cards";
-import { gateFor } from "@/lib/modes";
+import { gateFor, surpriseFor } from "@/lib/modes";
 import { useGameStore } from "@/lib/game-store";
 import { usePreferences } from "@/lib/preferences";
 
@@ -65,6 +65,11 @@ export function DebugPanel() {
         <span>
           swaps <span className="text-muted">{swaps}</span>
         </span>
+        {surpriseFor(game.mode) ? (
+          <span>
+            truths this tier <span className="text-muted">{game.truthsAtTier}</span>
+          </span>
+        ) : null}
       </div>
       <div className="mt-1 flex flex-wrap gap-x-4 gap-y-0.5">
         {counts.map((row) => (

@@ -38,7 +38,7 @@ function check(cond, msg) {
 try {
   const { useGameStore } = await server.ssrLoadModule("/src/lib/game-store.ts");
   const { beatsFor } = await server.ssrLoadModule("/src/lib/cards.ts");
-  const { gateFor } = await server.ssrLoadModule("/src/lib/modes.ts");
+  const { gateFor, surpriseFor } = await server.ssrLoadModule("/src/lib/modes.ts");
 
 
 
@@ -71,6 +71,11 @@ try {
         tierSeen = g.tier;
 
         if (g.phase === "choose") {
+          if (surpriseFor(mode)) {
+            // The player has no say; the strategies collapse to one behaviour.
+            check(s().drawNext() === "ok", `${label}: draw came back empty at tier ${g.tier}`);
+            continue;
+          }
           const want =
             strategy === "mixed" ? (Math.random() < 0.5 ? "truth" : "dare") : strategy;
           const alt = want === "truth" ? "dare" : "truth";
@@ -92,12 +97,22 @@ try {
         if (g.phase === "reveal") {
           // Exercise the swap on roughly a fifth of cards.
           if (g.beat === 0 && !g.swapUsed && Math.random() < 0.2) {
-            const before = s().game.current.id;
+            const before = s().game.current;
             const r = s().swapCard();
             if (r === "ok") {
               swaps += 1;
               const after = s().game.current;
-              check(after.id !== before, `${label}: swap returned the same card`);
+              check(after.id !== before.id, `${label}: swap returned the same card`);
+              // Same kind, specifically. Otherwise a player swaps until the
+              // kind flips and has reconstructed the pick, ratio bypassed.
+              check(
+                after.kind === before.kind,
+                `${label}: swapped a ${before.kind} and got a ${after.kind}`,
+              );
+              check(
+                s().game.playedInTier === g.playedInTier,
+                `${label}: a swap consumed a gate count`,
+              );
               check(
                 after.tier === g.tier,
                 `${label}: swap dealt tier ${after.tier} at tier ${g.tier}`,
@@ -134,6 +149,21 @@ try {
       const grats = hist.filter((h) => h.action === "played" && h.kind === "gratitude").length;
       const deepest = hist.reduce((m, h) => Math.max(m, h.tier), 0);
       check(deepest === 4, `${label}: deepest tier was ${deepest}, expected 4`);
+
+      // In a surprise mode the ratio must guarantee both kinds at every tier.
+      // A random draw against Heat tier 2 (8 truths, 44 dares) would bury the
+      // truths, which are the cards this game is actually for.
+      if (surpriseFor(mode)) {
+        for (const tier of [1, 2, 3]) {
+          const at = hist.filter(
+            (h) => h.action === "played" && h.tier === tier && (h.kind === "truth" || h.kind === "dare"),
+          );
+          const truths = at.filter((h) => h.kind === "truth").length;
+          const dares = at.filter((h) => h.kind === "dare").length;
+          check(truths >= 2, `${label}: tier ${tier} dealt ${truths} truths, needs at least 2`);
+          check(dares >= 2, `${label}: tier ${tier} dealt ${dares} dares, needs at least 2`);
+        }
+      }
 
       // Every play tier must land on exactly the gate. A same-kind picker
       // stalling at a tier shows up here as a short count, and a tier that

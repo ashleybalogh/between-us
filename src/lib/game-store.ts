@@ -5,6 +5,7 @@ import {
   COOLDOWN_EVERY,
   MAX_EXPLORE_PER_NIGHT,
   NEGOTIATION_CARD_ID,
+  TRUTH_RATIO,
   addressed,
   beatsFor,
   byTier,
@@ -20,7 +21,7 @@ import {
   type Tier,
 } from "@/lib/cards";
 import { excludedIds, useExclusions } from "@/lib/exclusions";
-import { gateFor, poolFor, toySuppressed, type Mode } from "@/lib/modes";
+import { gateFor, poolFor, surpriseFor, toySuppressed, type Mode } from "@/lib/modes";
 import { toysInHouse } from "@/lib/preferences";
 
 export type Screen = "home" | "setup" | "play" | "settings";
@@ -72,6 +73,8 @@ export type GameState = {
   swapUsed: boolean;
   /** Cards played at the current tier. Rule 2 gates on this. */
   playedInTier: number;
+  /** Truths dealt at the current tier. Drives the ratio in surprise modes. */
+  truthsAtTier: number;
   /** Explore cards dealt this night. Capped at MAX_EXPLORE_PER_NIGHT. */
   exploreDealt: number;
   /** Both verdicts are in on the explore card currently face up. */
@@ -100,6 +103,8 @@ type GameStore = {
   startGame: (mode: Mode) => void;
   advanceSetup: () => void;
   pickKind: (kind: CardKind) => "ok" | "empty";
+  /** Surprise modes: the engine picks the kind against TRUTH_RATIO. */
+  drawNext: () => "ok" | "empty";
   nextBeat: () => void;
   swapCard: () => "ok" | "used" | "unavailable";
   /** Both verdicts at once. Order is turn-player first, partner second. */
@@ -140,6 +145,7 @@ function freshGame(mode: Mode): GameState {
     beat: 0,
     swapUsed: false,
     playedInTier: 0,
+    truthsAtTier: 0,
     exploreDealt: 0,
     exploreResolved: false,
     pendingTonight: null,
@@ -158,6 +164,36 @@ function entryFor(card: PromptCard, player: PlayerId): HistoryEntry {
     text: card.text,
     action: "played",
   };
+}
+
+/**
+ * Which kind a surprise draw deals next.
+ *
+ * A deterministic counter, not a per-draw coin flip: a random one-in-three
+ * will happily produce a tier with no truths at all, which is the exact
+ * failure the ratio exists to prevent. At a gate of 6 this yields 2 truths and
+ * 4 dares, and it resets at every tier boundary.
+ *
+ * If the wanted kind has run dry at this tier, deal the other and say so.
+ * Never stall, and never skip the gate count.
+ */
+function surpriseKind(game: GameState): CardKind {
+  const has = (kind: CardKind) =>
+    playable(game.cards, game.remainingIds, { tier: game.tier, kind, player: game.turn }).length >
+    0;
+
+  const target = Math.floor(game.playedInTier * TRUTH_RATIO) + 1;
+  const wanted: CardKind = game.truthsAtTier < target ? "truth" : "dare";
+  if (has(wanted)) return wanted;
+
+  const fallback: CardKind = wanted === "truth" ? "dare" : "truth";
+  if (has(fallback)) {
+    console.warn(
+      `[between-us] tier ${game.tier}: no ${wanted} left for ${game.turn}, dealt a ${fallback}. A pool is under the gate.`,
+    );
+    return fallback;
+  }
+  return wanted;
 }
 
 /** Nothing left to choose from at this tier, for either player. */
@@ -294,7 +330,14 @@ function enterTier(game: GameState, tier: Tier): GameState {
       (card) => card.kind === "gratitude" && card.tier === tier && remaining.has(card.id),
     ) ?? game.cards.find((card) => card.kind === "gratitude" && remaining.has(card.id));
 
-  const base: GameState = { ...game, tier, playedInTier: 0, beat: 0, swapUsed: false };
+  const base: GameState = {
+    ...game,
+    tier,
+    playedInTier: 0,
+    truthsAtTier: 0,
+    beat: 0,
+    swapUsed: false,
+  };
 
   if (!gratitude) return afterGratitude(base);
 
@@ -365,6 +408,32 @@ export const useGameStore = create<GameStore>()(
         });
         if (!card) return "empty";
         set({ game: { ...game, phase: "reveal", current: card, beat: 0, swapUsed: false } });
+        return "ok";
+      },
+
+      drawNext: () => {
+        const game = get().game;
+        if (!game || game.phase !== "choose") return "empty";
+        if (!surpriseFor(game.mode)) return "empty";
+
+        const kind = surpriseKind(game);
+        const card = draw(game.cards, game.remainingIds, {
+          tier: game.tier,
+          kind,
+          player: game.turn,
+        });
+        if (!card) return "empty";
+
+        set({
+          game: {
+            ...game,
+            phase: "reveal",
+            current: card,
+            beat: 0,
+            swapUsed: false,
+            truthsAtTier: game.truthsAtTier + (card.kind === "truth" ? 1 : 0),
+          },
+        });
         return "ok";
       },
 

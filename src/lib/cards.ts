@@ -60,6 +60,16 @@ export const buildDeck = (raw: RawCard[], slug: string): PromptCard[] =>
  */
 export const DEFAULT_TIER_GATE = 6;
 
+/**
+ * Target share of truths when a mode draws instead of letting the player pick.
+ *
+ * Never draw at random from the combined pool: Heat tier 2 is 8 truths against
+ * 44 dares, so a random draw is 85% dares and the truths — the highest-value
+ * cards in the deck for what this game is for — effectively disappear. Draw the
+ * kind first against this ratio, then a card from that kind's pool.
+ */
+export const TRUTH_RATIO = 1 / 3;
+
 /** Outcome of an `explore` card. Only "not-for-me" outlives the night. */
 export type ExploreVerdict = "not-for-me" | "not-tonight" | "tonight";
 

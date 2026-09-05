@@ -69,6 +69,29 @@ export function gateFor(mode: Mode): number {
   return TIER_GATE[mode];
 }
 
+/**
+ * Whether the engine picks the kind instead of the player.
+ *
+ * Heat draws. The truth/dare pick was defensible when those categories were
+ * the only structure in the game; they are not any more. Swap is the better
+ * consent signal — declining a specific card says more than avoiding a whole
+ * category — and the pick lets a player hide, which is the opposite of what
+ * the stretch deck is for.
+ *
+ * Connection keeps the pick. Its tier-3 cards are heavy, and a moment of
+ * consent before a heavy question arrives is worth more there than the stretch
+ * is. That is a claim about how a night lands, so it stays a flag rather than
+ * a migration until both have been played.
+ */
+export const SURPRISE_DRAW: Record<Mode, boolean> = {
+  connection: false,
+  heat: true,
+};
+
+export function surpriseFor(mode: Mode): boolean {
+  return SURPRISE_DRAW[mode];
+}
+
 const TIERS: Tier[] = [0, 1, 2, 3, 4];
 
 /**

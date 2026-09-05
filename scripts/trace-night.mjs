@@ -27,13 +27,20 @@ const server = await createServer({
 
 try {
   const { useGameStore } = await server.ssrLoadModule("/src/lib/game-store.ts");
+  const { surpriseFor } = await server.ssrLoadModule("/src/lib/modes.ts");
   const S = () => useGameStore.getState();
 
   const mode = process.argv[2] === "connection" ? "connection" : "heat";
   const pick = process.argv[3] === "truth" ? "truth" : "dare";
   const other = pick === "truth" ? "dare" : "truth";
-  console.log(`
-${mode}, picking ${pick} every time`);
+  const surprise = surpriseFor(mode);
+  console.log(
+    surprise
+      ? `
+${mode}, engine draws the kind (the pick argument is ignored)`
+      : `
+${mode}, picking ${pick} every time`,
+  );
 
   S().startGame(mode);
   let guard = 0;
@@ -44,8 +51,12 @@ ${mode}, picking ${pick} every time`);
   while (S().game.phase !== "over" && guard++ < 400) {
     const g = S().game;
     if (g.phase === "choose") {
-      // Only fall back if the tier has none of the chosen kind left.
-      if (S().pickKind(pick) === "empty") S().pickKind(other);
+      if (surprise) {
+        S().drawNext();
+      } else if (S().pickKind(pick) === "empty") {
+        // Only fall back if the tier has none of the chosen kind left.
+        S().pickKind(other);
+      }
       continue;
     }
     if (g.phase === "explore") {
@@ -70,11 +81,14 @@ ${mode}, picking ${pick} every time`);
   }
 
   const byDeck = {};
+  const byKind = {};
   for (const row of seen) {
-    if (row.kind !== "dare") continue;
+    if (row.kind !== "truth" && row.kind !== "dare") continue;
     byDeck[row.deck] = (byDeck[row.deck] ?? 0) + 1;
+    byKind[row.kind] = (byKind[row.kind] ?? 0) + 1;
   }
-  console.log("\nDares dealt by source deck:", byDeck);
+  console.log("\nTruths and dares by source deck:", byDeck);
+  console.log("By kind:", byKind);
   console.log("Tiers reached:", [...new Set(seen.map((r) => r.tier))].join(", "));
 } finally {
   await server.close();

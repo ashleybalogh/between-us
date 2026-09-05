@@ -11,7 +11,7 @@ import {
   type Tier,
 } from "@/lib/cards";
 import { currentBeats, displayName, possess, useGameStore } from "@/lib/game-store";
-import { gateFor, type Mode } from "@/lib/modes";
+import { gateFor, surpriseFor, type Mode } from "@/lib/modes";
 import { cn } from "@/lib/utils";
 
 function tap(ms = 12) {
@@ -78,6 +78,7 @@ export function PlayView() {
   const game = useGameStore((state) => state.game);
   const names = useGameStore((state) => state.names);
   const pickKind = useGameStore((state) => state.pickKind);
+  const drawNext = useGameStore((state) => state.drawNext);
   const nextBeat = useGameStore((state) => state.nextBeat);
   const swapCard = useGameStore((state) => state.swapCard);
   const endGame = useGameStore((state) => state.endGame);
@@ -130,6 +131,7 @@ export function PlayView() {
     player: game.turn,
   }).length;
 
+  const surprise = surpriseFor(game.mode);
   const speaker = beat?.speaker ?? game.turn;
   const headline =
     game.phase === "gratitude" || game.phase === "explore"
@@ -137,6 +139,15 @@ export function PlayView() {
       : game.phase === "close"
         ? "Together"
         : displayName(names, speaker);
+
+  function onDraw() {
+    const result = drawNext();
+    if (result === "empty") {
+      setNote("Nothing left to deal at this depth.");
+      return;
+    }
+    tap(10);
+  }
 
   function onPick(kind: CardKind) {
     const result = pickKind(kind);
@@ -205,7 +216,9 @@ export function PlayView() {
                 {headline}
               </p>
               <p className="mt-2 min-h-10 text-center text-sm leading-relaxed text-muted">
-                {game.phase === "choose" && (note ?? "Truth or dare.")}
+                {game.phase === "choose" &&
+                  (note ??
+                    (surprise ? "You don't pick this one. Swap it if it isn't for you." : "Truth or dare."))}
                 {game.phase === "gratitude" && "This one is dealt, not chosen."}
                 {game.phase === "explore" &&
                   "Nobody is doing anything. This one only asks what you'd want."}
@@ -237,7 +250,20 @@ export function PlayView() {
           )}
         </div>
 
-        {game.phase === "choose" ? (
+        {/*
+          Surprise modes get one button. Deliberately no shuffling or
+          coin-flip flourish on it: the kind is chosen by a counter against a
+          fixed ratio, and animating it as chance would misrepresent the
+          mechanic. A player who reads a run of dares as luck rather than
+          design draws the wrong conclusion about the deck.
+        */}
+        {game.phase === "choose" && surprise ? (
+          <Button size="xl" className="w-full" onClick={onDraw} disabled={!truthLeft && !dareLeft}>
+            Draw
+          </Button>
+        ) : null}
+
+        {game.phase === "choose" && !surprise ? (
           <div className="flex gap-3">
             <KindButton kind="truth" remaining={truthLeft} onPick={onPick} />
             <KindButton kind="dare" remaining={dareLeft} onPick={onPick} />
