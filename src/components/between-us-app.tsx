@@ -1,6 +1,7 @@
 import { useEffect } from "react";
-import { DeckView } from "@/components/deck-view";
 import { HomeView } from "@/components/home-view";
+import { SetupView } from "@/components/setup-view";
+import { SettingsView } from "@/components/settings-view";
 import { PlayView } from "@/components/play-view";
 import { useGameStore } from "@/lib/game-store";
 
@@ -18,7 +19,8 @@ export function BetweenUsApp() {
     <div className="table-felt min-h-dvh text-fg">
       {screen === "home" ? <HomeView /> : null}
       {screen === "play" ? <PlayView /> : null}
-      {screen === "deck" ? <DeckView /> : null}
+      {screen === "setup" ? <SetupView /> : null}
+      {screen === "settings" ? <SettingsView /> : null}
     </div>
   );
 }

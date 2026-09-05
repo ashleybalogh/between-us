@@ -30,7 +30,6 @@ function NameField({ player }: { player: PlayerId }) {
 export function HomeView() {
   const game = useGameStore((state) => state.game);
   const names = useGameStore((state) => state.names);
-  const startGame = useGameStore((state) => state.startGame);
   const setScreen = useGameStore((state) => state.setScreen);
   const inProgress = Boolean(game && game.phase !== "over");
 
@@ -45,7 +44,7 @@ export function HomeView() {
             Between Us
           </h1>
           <p className="mx-auto mt-5 max-w-xs text-sm leading-relaxed text-muted">
-            A private truth or dare deck. One pass each. Your cards, if you bring them.
+            A deck that starts easy and does not stay there.
           </p>
         </header>
 
@@ -56,7 +55,11 @@ export function HomeView() {
 
         <div className="mt-10 flex flex-col gap-3">
           {inProgress && game ? (
-            <Button size="xl" className="w-full" onClick={() => setScreen("play")}>
+            <Button
+              size="xl"
+              className="w-full"
+              onClick={() => setScreen(game.phase === "setup" ? "setup" : "play")}
+            >
               Continue · {displayName(names, game.turn)}
             </Button>
           ) : null}
@@ -64,18 +67,19 @@ export function HomeView() {
             size="xl"
             variant={inProgress ? "outline" : "solid"}
             className="w-full"
-            onClick={startGame}
+            onClick={() => setScreen("setup")}
           >
-            {inProgress ? "New game" : "Play"}
+            {inProgress ? "New night" : "Begin"}
           </Button>
-          <Button size="md" variant="ghost" className="w-full" onClick={() => setScreen("deck")}>
-            Deck
+          <Button size="md" variant="ghost" className="w-full" onClick={() => setScreen("settings")}>
+            Settings
           </Button>
         </div>
 
         <ul className="mt-8 space-y-2 pb-4 text-center text-sm leading-relaxed text-faint">
-          <li>Turns alternate. Draw truth or dare.</li>
-          <li>Each player holds one pass for the whole game.</li>
+          <li>Turns alternate. Truth or dare, your pick.</li>
+          <li>Both of you answer every truth.</li>
+          <li>Any card can be swapped once, free.</li>
         </ul>
       </div>
     </div>

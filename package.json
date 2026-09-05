@@ -6,7 +6,9 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "deck:check": "node scripts/deck-check.mjs",
+    "simulate": "node scripts/simulate.mjs"
   },
   "dependencies": {
     "@radix-ui/react-slot": "^1.2.4",

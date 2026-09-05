@@ -25,6 +25,12 @@ jobs:
           node-version: 22
           cache: npm
       - run: npm ci
+      # Gates before the build. deck:check fails when a tier dead-ends on one
+      # kind; simulate plays 145 nights and asserts the draw rules hold. Both
+      # catch deck edits that typecheck perfectly and play badly.
+      - run: npm run typecheck
+      - run: npm run deck:check
+      - run: npm run simulate
       - run: npm run build
       - uses: actions/upload-pages-artifact@v3
         with:

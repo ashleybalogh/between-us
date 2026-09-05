@@ -1,23 +1,21 @@
 import { useEffect, useState } from "react";
-import type { CardKind, PromptCard } from "@/lib/cards";
+import type { PromptCard } from "@/lib/cards";
 import { cn } from "@/lib/utils";
 
 type PlayingCardProps = {
   card: PromptCard | null;
-  kind?: CardKind;
   flipped: boolean;
   playerLabel: string;
 };
 
-export function PlayingCard({ card, kind, flipped, playerLabel }: PlayingCardProps) {
-  const shownKind = card?.kind ?? kind ?? "truth";
+export function PlayingCard({ card, flipped, playerLabel }: PlayingCardProps) {
+  const shownKind = card?.kind ?? "truth";
   const [entered, setEntered] = useState(false);
 
   useEffect(() => {
     const frame = requestAnimationFrame(() => setEntered(true));
     return () => cancelAnimationFrame(frame);
   }, [card?.id]);
-
   return (
     <div
       className={cn("playing-scene w-full max-w-xs mx-auto", flipped && entered && "is-flipped")}
@@ -46,7 +44,7 @@ export function PlayingCard({ card, kind, flipped, playerLabel }: PlayingCardPro
               </p>
             </div>
             <p className="font-display my-auto text-center text-card-prompt leading-snug italic text-card-fg">
-              {card?.text ?? "Choose truth or dare."}
+              {card?.text ?? ""}
             </p>
             <p className="text-center text-2xs uppercase tracking-widest text-card-muted">
               Between Us
